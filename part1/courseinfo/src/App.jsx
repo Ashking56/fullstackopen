@@ -1,62 +1,28 @@
-const Header = (props) => {
-    console.log(props);
-    return (
-        <div>
-            <h1>{props.course.name}</h1>
-        </div>
-    );
-};
+import { useState } from 'react'
+
+const Button = (props) => (
+    <button onClick={props.handleClick}>
+        {props.text}
+    </button>
+)
 
 
-
-const Content = (props) => {
-    console.log(props);
-    return (
-        <div>
-            {props.course.parts.map((part, index) => (
-                <p key={index}>
-                    {part.name} {part.exercises}
-                </p>
-            ))}
-        </div >
-    );
-};
-
-const Total = (props) => {
-    console.log(props)
-    const total = props.course.parts.reduce((sum, part) => sum + part.exercises, 0);
-    console.log(total)
-    return (
-        <div>
-            <p>Number of exercises {total}</p>
-        </div>
-    );
-};
 const App = () => {
-    const course = {
-        name: 'Half Stack application development',
-        parts: [
-            {
-                name: 'Fundamentals of React',
-                exercises: 10
-            },
-            {
-                name: 'Using props to pass data',
-                exercises: 7
-            },
-            {
-                name: 'State of a component',
-                exercises: 14
-            }
-        ]
+    const [value, setValue] = useState(10)
+
+    const setToValue = (newValue) => {
+        console.log('value now', newValue)
+        setValue(newValue)
     }
+
     return (
         <div>
-            <Header course={course} />
-            <Content course={course} />
-            <Total course={course} />
+            {value}
+            <Button handleClick={() => setToValue(1000)} text="thousand" />
+            <Button handleClick={() => setToValue(0)} text="reset" />
+            <Button handleClick={() => setToValue(value + 1)} text="increment" />
         </div>
-    );
-};
+    )
+}
 
-export default App;
+export default App
