@@ -25,7 +25,9 @@ const App = () => {
     setVotes(newVotes)
   }
   const maxVotes = Math.max(...votes)
+  console.log(maxVotes)
   const mostVotedIndex = votes.indexOf(maxVotes)
+  console.log(mostVotedIndex)
 
   return (
     <div>
