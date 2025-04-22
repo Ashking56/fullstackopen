@@ -1,5 +1,5 @@
 const Header = (props) => {
-    console.log(props)
+    console.log('Header props value is', props)
 
     return (
 

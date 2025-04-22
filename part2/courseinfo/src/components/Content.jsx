@@ -1,6 +1,8 @@
 import Part from './Part'
 
 const Content = (props) => {
+    console.log('Content props value is', props)
+
     return (
         <div>
             {props.parts.map(part =>
