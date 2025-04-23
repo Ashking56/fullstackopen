@@ -15,9 +15,11 @@ const App = () => {
     if (existe) {
       alert(`${newName} is already added to phonebook`)
     }
-    else
+    else {
       setPersons(persons.concat(personObject))
-    setNewName('')
+      setNewName('')
+    }
+
 
   }
 
