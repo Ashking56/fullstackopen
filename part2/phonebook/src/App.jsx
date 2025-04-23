@@ -11,14 +11,9 @@ const App = () => {
     const personObject = {
       name: newName
     }
-    console.log('valor personObject', personObject);
-    console.log('valor persons', persons);
-    if (persons.map.includes(() => {
-
-    })) {
-
-
-      alert(`${newName} is alread added to phonebook`)
+    const existe = persons.some(persons => persons.name === personObject.name)
+    if (existe) {
+      alert(`${newName} is already added to phonebook`)
     }
     else
       setPersons(persons.concat(personObject))
