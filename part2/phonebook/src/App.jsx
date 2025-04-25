@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import { Filter } from './components/Filter'
+import { PersonForm } from './components/PersonForm'
+import { Persons } from './components/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -12,32 +15,22 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('')
 
   const addName = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     const personObject = {
       name: newName,
-      number: phoneNumber
-    }
-    const existe = persons.some(persons => persons.name === personObject.name)
-    if (existe) {
-      alert(`${newName} is already added to phonebook`)
-    }
-    else {
-      setPersons(persons.concat(personObject))
-      setNewName('')
-    }
-  }
+      number: phoneNumber,
+      id: Math.max(...persons.map(p => p.id)) + 1
+    };
 
-  const handleNameChange = (event) => {
-    console.log(event.target.value)
-    setNewName(event.target.value)
-  }
-  const handleNumberChange = (event) => {
-    console.log(event.target.value)
-    setPhoneNumber(event.target.value)
-  }
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value)
-  }
+    if (persons.some(person => person.name === newName)) {
+      alert(`${newName} already exists in phonebook`);
+      return;
+    }
+
+    setPersons([...persons, personObject]);
+    setNewName('');
+    setPhoneNumber('');
+  };
 
   const filteredPersons = persons.filter(person =>
     person.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -46,44 +39,24 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with: <input 
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-      </div>
+      <Filter
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
 
-      <form onSubmit={addName}>
-        <div>
-          name: <input
-            value={newName}
-            onChange={handleNameChange}
-          />
-          <div>
-          number: <input
-            value={phoneNumber}
-            onChange={handleNumberChange}
-          />
-          </div>          
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <div>debug: {newName}</div>
-      <h2>Numbers</h2>
-      <ul>
-        {filteredPersons.map(person => (
-          <li key={person.name}>{person.name} {person.number}</li>
-        ))}
-      </ul>
+      <h3>Add a new</h3>
+      <PersonForm
+        newName={newName}
+        phoneNumber={phoneNumber}
+        onNameChange={(e) => setNewName(e.target.value)}
+        onNumberChange={(e) => setPhoneNumber(e.target.value)}
+        onSubmit={addName}
+      />
 
+      <h3>Numbers</h3>
+      <Persons persons={filteredPersons} />
     </div>
-
   )
-
-
 }
-
 
 export default App
