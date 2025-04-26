@@ -22,6 +22,9 @@ const App = () => {
       id: Math.max(...persons.map(p => p.id)) + 1
     };
 
+
+
+    
     if (persons.some(person => person.name === newName)) {
       alert(`${newName} already exists in phonebook`);
       return;
