@@ -1,4 +1,12 @@
-import ReactDOM from 'react-dom/client'
-import App from './App'
+const Note = ({ note, toggleImportance }) => {
+  const label = note.important ? 'make not important' : 'make important'
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />)
+  return (
+    <li>
+      {note.content}
+      <button onClick={toggleImportance}>{label}</button>
+    </li>
+  )
+}
+
+export default Note
