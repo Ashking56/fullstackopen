@@ -8,7 +8,7 @@
     {
       "id": "2",
       "content": "Browser can execute only JavaScript",
-      "important": true
+      "important": false
     },
     {
       "id": "3",
@@ -18,7 +18,7 @@
     {
       "id": "4685",
       "content": "Afdasf",
-      "important": true
+      "important": false
     },
     {
       "id": "9b1a",
@@ -28,17 +28,17 @@
     {
       "id": "b6d3",
       "content": "tar",
-      "important": false
+      "important": true
     },
     {
       "id": "969c",
       "content": "ddccreeee",
-      "important": true
+      "important": false
     },
     {
       "id": "8520",
       "content": "4444434332",
-      "important": true
+      "important": false
     }
   ]
 }

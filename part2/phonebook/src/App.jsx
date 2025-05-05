@@ -3,12 +3,15 @@ import { Filter } from "./components/Filter";
 import { PersonForm } from "./components/PersonForm";
 import { Persons } from "./components/Persons";
 import personService from "./services/persons";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [successfulMessage, setSuccessfulMessage] = useState('')
+
 
   const hook = () => {
     personService.getAll().then((initialPerson) => {
@@ -28,17 +31,13 @@ const App = () => {
       );
 
       if (confirmUpdate) {
-        // Crear objeto actualizado
         const updatedPerson = {
           ...existingPerson,
           number: phoneNumber,
         };
 
-        // Llamar al servicio de actualización
         personService
-          .update(existingPerson.id, updatedPerson)
-          .then((returnedPerson) => {
-            // Actualizar el estado con la persona modificada
+          .update(existingPerson.id, updatedPerson).then((returnedPerson) => {
             setPersons(
               persons.map((person) =>
                 person.id === existingPerson.id ? returnedPerson : person
@@ -66,9 +65,15 @@ const App = () => {
         setPersons(persons.concat(returnedPerson));
         setNewName("");
         setPhoneNumber("");
+        setSuccessfulMessage(
+          `Person '${newPerson.name}' was sucessfully added to the server`
+        )
+        setTimeout(() => {
+          setSuccessfulMessage(null)
+        }, 5000)
       })
-      .catch((error) => {
-        alert("Error al crear el contacto");
+      .catch(error => {
+      alert("Error al crear el contacto");
         console.error("Error de creación:", error);
       });
   };
@@ -99,11 +104,11 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={successfulMessage} />
       <Filter
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-
       <h3>Add a new</h3>
       <PersonForm
         newName={newName}
@@ -112,7 +117,6 @@ const App = () => {
         onNumberChange={(e) => setPhoneNumber(e.target.value)}
         onSubmit={addName}
       />
-
       <h3>Numbers</h3>
       <Persons persons={filteredPersons} onDelete={handleDelete} />
     </div>
