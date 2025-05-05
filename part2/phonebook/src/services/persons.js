@@ -11,6 +11,11 @@ const create = (newObject) => {
   return request.then((response) => response.data);
 };
 
+// persons.js
+const update = (id, updatedObject) => {
+  return axios.put(`${baseUrl}/${id}`, updatedObject);
+};
+
 const erase = (id) => {
   return axios.delete(`${baseUrl}/${id}`).catch((error) => {
     console.error("Error:", error);
@@ -18,4 +23,4 @@ const erase = (id) => {
   });
 };
 
-export default { getAll, create, erase };
+export default { getAll, create, erase, update };

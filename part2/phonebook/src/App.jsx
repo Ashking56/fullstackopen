@@ -12,32 +12,69 @@ const App = () => {
 
   const hook = () => {
     personService.getAll().then((initialPerson) => {
-      setPersons(initialPerson);
+      setPersons(initialPerson || []);
     });
   };
   useEffect(hook, []);
 
   const addName = (event) => {
     event.preventDefault();
-    const personObject = {
-      name: newName,
-      number: phoneNumber,
-      id: Math.max(...persons.map((p) => p.id)) + 1,
-    };
 
-    if (persons.some((person) => person.name === newName)) {
-      alert(`${newName} already exists in phonebook`);
+    const existingPerson = persons.find((person) => person.name === newName);
+
+    if (existingPerson) {
+      const confirmUpdate = window.confirm(
+        `${newName} ya existe en la agenda. ¿Deseas reemplazar el número antiguo (${existingPerson.number}) con el nuevo (${phoneNumber})?`
+      );
+
+      if (confirmUpdate) {
+        // Crear objeto actualizado
+        const updatedPerson = {
+          ...existingPerson,
+          number: phoneNumber,
+        };
+
+        // Llamar al servicio de actualización
+        personService
+          .update(existingPerson.id, updatedPerson)
+          .then((returnedPerson) => {
+            // Actualizar el estado con la persona modificada
+            setPersons(
+              persons.map((person) =>
+                person.id === existingPerson.id ? returnedPerson : person
+              )
+            );
+            setNewName("");
+            setPhoneNumber("");
+          })
+          .catch((error) => {
+            alert("Error al actualizar el número");
+            console.error("Error de actualización:", error);
+          });
+      }
       return;
     }
-    personService.create(personObject).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson));
-      setNewName("");
-      setPhoneNumber("");
-    });
+
+    const newPerson = {
+      name: newName,
+      number: phoneNumber,
+    };
+
+    personService
+      .create(newPerson)
+      .then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        setNewName("");
+        setPhoneNumber("");
+      })
+      .catch((error) => {
+        alert("Error al crear el contacto");
+        console.error("Error de creación:", error);
+      });
   };
 
   const filteredPersons = persons.filter((person) =>
-    person.name.toLowerCase().includes(searchTerm.toLowerCase())
+    person?.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleDelete = (id) => {
@@ -54,6 +91,7 @@ const App = () => {
         })
         .catch((error) => {
           console.error("Error al eliminar:", error);
+          alert("No se pudo eliminar la persona. Intente nuevamente.");
         });
     }
   };
