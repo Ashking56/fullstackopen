@@ -11,9 +11,11 @@ const create = (newObject) => {
   return request.then((response) => response.data);
 };
 
-const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject);
-  return request.then((response) => response.data);
+const erase = (id) => {
+  return axios.delete(`${baseUrl}/${id}`).catch((error) => {
+    console.error("Error:", error);
+    throw error;
+  });
 };
 
-export default { getAll, create, update };
+export default { getAll, create, erase };

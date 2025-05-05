@@ -40,6 +40,24 @@ const App = () => {
     person.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleDelete = (id) => {
+    const personToDelete = persons.find((person) => person.id === id);
+
+    if (
+      personToDelete &&
+      window.confirm(`¿Eliminar a ${personToDelete.name}?`)
+    ) {
+      personService
+        .erase(id)
+        .then(() => {
+          setPersons(persons.filter((person) => person.id !== id));
+        })
+        .catch((error) => {
+          console.error("Error al eliminar:", error);
+        });
+    }
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -58,7 +76,7 @@ const App = () => {
       />
 
       <h3>Numbers</h3>
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} onDelete={handleDelete} />
     </div>
   );
 };
