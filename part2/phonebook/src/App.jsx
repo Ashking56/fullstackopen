@@ -27,7 +27,7 @@ const App = () => {
 
     if (existingPerson) {
       const confirmUpdate = window.confirm(
-        `${newName} ya existe en la agenda. ¿Deseas reemplazar el número antiguo (${existingPerson.number}) con el nuevo (${phoneNumber})?`
+        `${newName} already exists in phonebook. ¿Wish to replace the old number (${existingPerson.number}) with the new one (${phoneNumber})?`
       )
 
       if (confirmUpdate) {
